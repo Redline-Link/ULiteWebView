@@ -174,6 +174,11 @@ public class ULiteWebView {
             @Override
             public void run() {
                 init();
+                // avoid parent exist error, ref: https://stackoverflow.com/a/28071422
+                if (_webView.getParent() != null) {
+                    ((ViewGroup)_webView.getParent()).removeView(_webView); // <- fix?
+                }
+                // end of fix
                 FrameLayout view = (FrameLayout) Unity.ins.getActivity().getWindow().getDecorView();
                 view.addView(_webView);
 
